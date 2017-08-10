@@ -6,3 +6,21 @@ body {
 #shadowDom {
   display: none;
 }
+
+#path {
+  list-style: none;
+}
+
+#path > li {
+  transition: all 0.2s ease-in;
+}
+
+.next-wiki {
+  color: red;
+  font-size: 2em; 
+}
+
+.error {
+  color: firebrick;
+  font-size: 2em;
+}

@@ -71,6 +71,8 @@
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fetch__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__parse_wiki__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ui__ = __webpack_require__(3);
+
 
 
 
@@ -78,20 +80,23 @@ const findPhilosophy = async (term) => {
   const visited = []
   let foundPhilosophy = false
   let currentTerm = term
-  let pathDisplay = document.querySelector('#path')
-  console.log(pathDisplay)
+
   while (visited.length < 100 && !foundPhilosophy) { // stop after 100 tries
     let results = await __WEBPACK_IMPORTED_MODULE_0__fetch__["a" /* WikipediaNode */](currentTerm) // get the wikipedia DOM
-    if (!results.parse.title) {
-      console.log('No wiki found! Try a new term!')
-      return false
-    }
-    if (visited.includes(results.parse.title)) { // If you've already visited, you're in a loop
-      console.log('you found a loop!')
+    if (results === 'No Wiki Found') {
+      __WEBPACK_IMPORTED_MODULE_2__ui__["b" /* handleError */](results)
       return false
     }
 
-    visited.push(results.parse.title) // all good, keep moving.
+    if (visited.includes(results.parse.title)) { // If you've already visited, you're in a loop
+      __WEBPACK_IMPORTED_MODULE_2__ui__["a" /* addToPath */](results.parse.title)
+      __WEBPACK_IMPORTED_MODULE_2__ui__["b" /* handleError */]('You found a loop! Please try another search term.')
+      return false
+    }
+    visited.push(results.parse.title)
+    
+    __WEBPACK_IMPORTED_MODULE_2__ui__["a" /* addToPath */](results.parse.title)
+     // all good, keep moving.
     if (visited[visited.length - 1] === 'Philosophy') { // check to see if you're on philosophy now
       console.log('found Philosophy!')
       foundPhilosophy = true
@@ -103,14 +108,15 @@ const findPhilosophy = async (term) => {
   }
 }
 document.addEventListener('DOMContentLoaded', async () => {
-
   /********* 
   *Start UI*
   *********/
   let userInput = document.querySelector('#startTerm')
   let button = document.querySelector('#submitButton')
+  let ul = document.getElementById('path')
   button.addEventListener('click', (e) => {
     e.preventDefault()
+    ul.innerHTML = ''
     findPhilosophy(userInput.value)
   })
 })
@@ -129,8 +135,7 @@ async function WikipediaNode (page) {
   
   function handleErrors(response) {
     if (response.error) {
-      console.log('no wiki found')
-      return false
+      return 'No Wiki Found'
     }
     return response
   }
@@ -195,6 +200,38 @@ async function parseResults (results) {
 
   return link.getAttribute('href')
 }
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = addToPath;
+let i = 1
+
+function addToPath (wikiNode) {
+  const ul = document.getElementById('path')
+  const li = document.createElement('li')
+  if (ul.children.length > 0) {
+    var prev = ul.children[ul.children.length - 1]
+    prev.classList.remove('next-wiki')
+  }
+  li.innerHTML = `${i}. ${wikiNode}`
+  li.classList.add('next-wiki')
+  ul.appendChild(li)
+  i++
+}
+
+const handleError = (message) => {
+  const ul = document.getElementById('path')
+  const li = document.createElement('li')
+  li.classList.add('error')
+  li.innerHTML = message
+  ul.appendChild(li)
+}
+/* harmony export (immutable) */ __webpack_exports__["b"] = handleError;
+
 
 
 /***/ })
