@@ -78,8 +78,9 @@ const findPhilosophy = async (term) => {
   const visited = []
   let foundPhilosophy = false
   let currentTerm = term
+  let pathDisplay = document.querySelector('#path')
+  console.log(pathDisplay)
   while (visited.length < 100 && !foundPhilosophy) { // stop after 100 tries
-    console.log(currentTerm)
     let results = await __WEBPACK_IMPORTED_MODULE_0__fetch__["a" /* WikipediaNode */](currentTerm) // get the wikipedia DOM
     if (!results.parse.title) {
       console.log('No wiki found! Try a new term!')
@@ -159,18 +160,23 @@ async function parseResults (results) {
     let wikiDom = document.getElementsByClassName('mw-parser-output')[0]
     let articleFirstBodyParagraph = wikiDom.querySelector('p > b').parentElement
     let potentialFirstLink = articleFirstBodyParagraph.getElementsByTagName('a')[i]
-    var url = potentialFirstLink.getAttribute('href')
-    return url
+    console.log(potentialFirstLink)
+    
+    return potentialFirstLink
   }
 
-  function checkLink (link) {
+  function checkLink (linkTag) {
+    if (link.classList.contains('mw-redirect')) {
+      return false
+    }
+    var url = linkTag.getAttribute('href')
     const goodLink = (
-      link.includes('wiki') &&
-      !link.includes('Help:') &&
-      !link.includes('File') &&
-      !link.includes('Wikipedia') &&
-      !link.includes('wiktionary') &&
-      !link.includes('Latin')
+      url.includes('wiki') &&
+      !url.includes('Help:') &&
+      !url.includes('File') &&
+      !url.includes('Wikipedia') &&
+      !url.includes('wiktionary') &&
+      !url.includes('Language')
     )
     return goodLink
   }
@@ -187,7 +193,7 @@ async function parseResults (results) {
     }
   }
 
-  return link
+  return link.getAttribute('href')
 }
 
 
