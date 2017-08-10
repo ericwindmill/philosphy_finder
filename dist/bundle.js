@@ -70,19 +70,15 @@
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fetch__ = __webpack_require__(1);
-
-
-console.log(__WEBPACK_IMPORTED_MODULE_0__fetch__["a" /* dog */])
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__parse_wiki__ = __webpack_require__(2);
 
 
 
-// document.addEventListener('DOMContentLoaded', () => {
-//   const tutorial = new Tutorial()
-//   const tutorialLink = document.getElementById('begin-tutorial-link')
-//   tutorialLink.addEventListener('click', function () {
-//     tutorial.beginTutorial()
-//   })
-// })
+document.addEventListener('DOMContentLoaded', async () => {
+  let results = await __WEBPACK_IMPORTED_MODULE_0__fetch__["a" /* WikipediaNode */]('cat')
+  Object(__WEBPACK_IMPORTED_MODULE_1__parse_wiki__["a" /* parseResults */])(results)
+})
+
 
 
 /***/ }),
@@ -90,37 +86,38 @@ console.log(__WEBPACK_IMPORTED_MODULE_0__fetch__["a" /* dog */])
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-// async function WikipediaNode (page) {
-//       this.currentPage = {}
-    
-//       async function fetchPage (page) {
-//         const wikipediaApi = `https://en.wikipedia.org/w/api.php?action=parse&page=${page}&prop=text&origin=*&format=json`
-//         await fetch(wikipediaApi)
-//           .then(resp => {return resp.json()})
-//           .then(resp => {
-//             this.currentPage = resp
-//           })
-//       }
+/* harmony export (immutable) */ __webpack_exports__["a"] = WikipediaNode;
+async function WikipediaNode (page) {
+  this.currentPage = {}
+  const wikipediaApi = `https://en.wikipedia.org/w/api.php?action=parse&page=${page}&prop=text&origin=*&format=json`
+  
+  await fetch(wikipediaApi)
+    .then(resp => { return resp.json() })
+    .then(resp => {
+      this.currentPage = resp
+    })
 
-//       await fetchPage(page)
-//       console.log(this.currentPage)
-//       return this.currentPage
-//     }
+  return this.currentPage
+}
 
-//     let searchTerm = 'dragon'
-//     let result = document.querySelector('.results')
-//     let fetchButton = document.querySelector('.WikiFetch')
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = parseResults;
+async function parseResults (results) {
+  let shadowDom = document.querySelector('#shadowDom')
+  shadowDom.innerHTML = `<p>${results.parse.text['*']}</p>`
+  console.log(shadowDom)
+}
 //     let returnJson
 //     fetchButton.addEventListener('click', async (e) => {
 //       e.preventDefault()
 //       returnJson = await WikipediaNode('dragon')
 //       result.innerHTML = `<p><pre><code>${returnJson.parse.text['*']}</code></pre></p>`
 //     })
-
-
-const dog = 'dog'
-/* harmony export (immutable) */ __webpack_exports__["a"] = dog;
-
 
 /***/ })
 /******/ ]);
