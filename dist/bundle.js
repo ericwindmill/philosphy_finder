@@ -74,13 +74,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-document.addEventListener('DOMContentLoaded', async () => {
+const findPhilosophy = async (term) => {
   const visited = []
   let foundPhilosophy = false
-  let currentTerm = 'cat'
+  let currentTerm = term
   while (visited.length < 100 && !foundPhilosophy) { // stop after 100 tries
     console.log(currentTerm)
     let results = await __WEBPACK_IMPORTED_MODULE_0__fetch__["a" /* WikipediaNode */](currentTerm) // get the wikipedia DOM
+    if (!results.parse.title) {
+      console.log('No wiki found! Try a new term!')
+      return false
+    }
     if (visited.includes(results.parse.title)) { // If you've already visited, you're in a loop
       console.log('you found a loop!')
       return false
@@ -90,11 +94,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (visited[visited.length - 1] === 'Philosophy') { // check to see if you're on philosophy now
       console.log('found Philosophy!')
       foundPhilosophy = true
+      break
     } else {
       let url = await Object(__WEBPACK_IMPORTED_MODULE_1__parse_wiki__["a" /* parseResults */])(results)
       currentTerm = url.slice(6)
     }
   }
+}
+document.addEventListener('DOMContentLoaded', async () => {
+
+  /********* 
+  *Start UI*
+  *********/
+  let userInput = document.querySelector('#startTerm')
+  let button = document.querySelector('#submitButton')
+  button.addEventListener('click', (e) => {
+    e.preventDefault()
+    findPhilosophy(userInput.value)
+  })
 })
 
 
@@ -109,8 +126,17 @@ async function WikipediaNode (page) {
   this.currentPage = {}
   const wikipediaApi = `https://en.wikipedia.org/w/api.php?action=parse&page=${page}&prop=text&origin=*&format=json`
   
+  function handleErrors(response) {
+    if (response.error) {
+      console.log('no wiki found')
+      return false
+    }
+    return response
+  }
+
   await fetch(wikipediaApi)
     .then(resp => { return resp.json() })
+    .then(resp => handleErrors(resp))
     .then(resp => {
       this.currentPage = resp
     })
@@ -126,11 +152,6 @@ async function WikipediaNode (page) {
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = parseResults;
 async function parseResults (results) {
-  // if (results.parse.title === 'Philosophy') {
-  //   console.log('found philosophy')
-  //   return true
-  // }
-
   let shadowDom = document.querySelector('#shadowDom')
   shadowDom.innerHTML = `${results.parse.text['*']}`
 
