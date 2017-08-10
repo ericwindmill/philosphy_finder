@@ -1,0 +1,19 @@
+{
+  "name": "getting-to-philosophy",
+  "version": "0.1",
+  "description": "All Roads Lead to Philosophy",
+  "author": "Eric Windmill <eric@ericwindmill.com>",
+  "main": "lib/getting-to-philosophy",
+  "bin": {
+    "demo": "."
+  },
+  "scripts": {
+    "start": "webpack"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2"
+  },
+  "devDependencies": {
+    "webpack": "^3.5.3"
+  }
+}
