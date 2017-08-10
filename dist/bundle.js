@@ -75,8 +75,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 document.addEventListener('DOMContentLoaded', async () => {
-  let results = await __WEBPACK_IMPORTED_MODULE_0__fetch__["a" /* WikipediaNode */]('cat')
-  Object(__WEBPACK_IMPORTED_MODULE_1__parse_wiki__["a" /* parseResults */])(results)
+  const visited = []
+  let foundPhilosophy = false
+  let currentTerm = 'cat'
+  while (visited.length < 100 && !foundPhilosophy) { // stop after 100 tries
+    console.log(currentTerm)
+    let results = await __WEBPACK_IMPORTED_MODULE_0__fetch__["a" /* WikipediaNode */](currentTerm) // get the wikipedia DOM
+    if (visited.includes(results.parse.title)) { // If you've already visited, you're in a loop
+      console.log('you found a loop!')
+      return false
+    }
+
+    visited.push(results.parse.title) // all good, keep moving.
+    if (visited[visited.length - 1] === 'Philosophy') { // check to see if you're on philosophy now
+      console.log('found Philosophy!')
+      foundPhilosophy = true
+    } else {
+      let url = await Object(__WEBPACK_IMPORTED_MODULE_1__parse_wiki__["a" /* parseResults */])(results)
+      currentTerm = url.slice(6)
+    }
+  }
 })
 
 
@@ -107,12 +125,11 @@ async function WikipediaNode (page) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = parseResults;
-/* unused harmony export checkLink */
 async function parseResults (results) {
-  if (results.parse.title === 'Philosophy') {
-    console.log('found philosophy')
-    return true
-  }
+  // if (results.parse.title === 'Philosophy') {
+  //   console.log('found philosophy')
+  //   return true
+  // }
 
   let shadowDom = document.querySelector('#shadowDom')
   shadowDom.innerHTML = `${results.parse.text['*']}`
@@ -148,14 +165,9 @@ async function parseResults (results) {
       i++
     }
   }
-  console.log(link)
+
   return link
 }
-
-async function checkLink (link) {
-
-}
-
 
 
 /***/ })
