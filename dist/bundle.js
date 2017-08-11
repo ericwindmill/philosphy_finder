@@ -18316,6 +18316,11 @@ async function gettingToPhilosophy (page) {
   while (!foundPhilosophy && visited.length < 100) {
     const ui = new __WEBPACK_IMPORTED_MODULE_2__ui_helpers_ui__["a" /* default */]()
     let nextPage = await Object(__WEBPACK_IMPORTED_MODULE_0__parse_helpers_fetch__["a" /* default */])(currentPage)
+    
+    if (nextPage === 'Page does not exist') {
+      ui.handleError('Page does not exists! Please try another search term.')
+      return false
+    }
 
     if (visited.includes(nextPage.title)) {
       ui.addToPath(nextPage.title, counter)
@@ -18380,8 +18385,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function fetchWikipediaPage (page) {
   const wikipediaApi = `https://en.wikipedia.org/w/api.php?action=parse&page=${page}&prop=text&origin=*&format=json`
+
   return fetch (wikipediaApi)
     .then(resp => { return resp.json() })
+    // .then(resp => {
+    //   if (resp.error.code === 'missingtitle') {
+    //     return handleErrors(resp)
+
+    //   }
+    // })
     .then(async resp => {
       const html = resp.parse.text['*']
       const $ = __WEBPACK_IMPORTED_MODULE_0_cheerio___default.a.load(html)
@@ -18390,11 +18402,15 @@ async function fetchWikipediaPage (page) {
       if (isRedirect.length) {
         return fetchWikipediaPage(isRedirect.text().split('/').pop().split('#')[0])
       }
+
       const nextPage = await Object(__WEBPACK_IMPORTED_MODULE_1__parseWiki__["a" /* default */])($, page)
       return {
         title: nextPage[0].attribs.title,
         nextPage
       }
+    })
+    .catch(resp => {
+      return 'Page does not exist'
     })
 }
 
