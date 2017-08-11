@@ -1,5 +1,7 @@
 # [Getting to Philosophy](https://ericwindmill.github.io/philosphy_finder/)
-Getting to Philosophy is a Wikipedia web crawler that will count and record the steps it takes to get to Philsophy.
+[Getting to Philosophy](https://ericwindmill.github.io/philosphy_finder/) is a Wikipedia web crawler that will count and record the steps it takes to get to Philsophy.
+
+[Check it out here!](https://ericwindmill.github.io/philosphy_finder/)
 
 According to Wikipedia: "Clicking on the first link in the main text of a Wikipedia article, and then repeating the process for subsequent articles, will usually lead to the Philosophy article. As of February 2016, 97% of all articles in Wikipedia eventually lead to the article Philosophy."
 
