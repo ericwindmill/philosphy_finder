@@ -1,10 +1,17 @@
 :root {
   --grey: #DFE4E8;
   --grey-lighter: #F9FAFB;
+  /*brand secondary*/
   --teal: #47C1BF;
   --teal-dark: #00848E; 
+  /*links*/
   --blue: #007ACE;
+  /*brand*/
   --indigo: #5C6AC4;
+  /*errors*/
+  --red: #ED6347;
+  /*success tips*/
+  --green: #50B83C;
 }
 
 a, p, button, input {
@@ -102,16 +109,16 @@ button {
 }
 
 .next-wiki {
-  color: red;
+  color: var(--teal);
   font-size: 2em; 
 }
 
 .error {
-  color: firebrick;
+  color: var(--red);
   font-size: 2em;
 }
 
 .philosophy-tag {
-  color: green;
+  color: var(--green);
   font-size: 3em;
 }
