@@ -18388,17 +18388,11 @@ async function fetchWikipediaPage (page) {
 
   return fetch (wikipediaApi)
     .then(resp => { return resp.json() })
-    // .then(resp => {
-    //   if (resp.error.code === 'missingtitle') {
-    //     return handleErrors(resp)
-
-    //   }
-    // })
     .then(async resp => {
+      console.log(resp)
       const html = resp.parse.text['*']
       const $ = __WEBPACK_IMPORTED_MODULE_0_cheerio___default.a.load(html)
-      const isRedirect = $('ul.redirectText li a')
-      
+      const isRedirect = $('ul.redirectText li a')      
       if (isRedirect.length) {
         return fetchWikipediaPage(isRedirect.text().split('/').pop().split('#')[0])
       }
