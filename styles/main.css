@@ -1,6 +1,8 @@
 :root {
   --grey: #DFE4E8;
   --grey-lighter: #F9FAFB;
+  --ink: #212B35; 
+  --ink-light: #919EAB;
   /*brand secondary*/
   --teal: #47C1BF;
   --teal-dark: #00848E; 
@@ -22,6 +24,7 @@ body {
   font-family: 'Avenir', Helvetica, sans-serif;
   background: var(--grey);
   padding: 50px;
+  color: var(--ink);
 }
 
 header {
@@ -109,7 +112,7 @@ button {
 }
 
 .next-wiki {
-  color: var(--teal);
+  color: var(--teal-dark);
   font-size: 2em; 
 }
 
