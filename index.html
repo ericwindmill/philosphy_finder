@@ -7,22 +7,29 @@
     <title>Philosophy Finder</title>
   </head>
   <body>
-    <h1>All Roads Lead to Philosophy</h1>
-    <section class='about'>
-      <span id='about-button'>
-        About
-      </span>
-      <div id='about-info'>
-        <p>Clicking on the first link in the main text of a Wikipedia article, and then repeating the process for subsequent articles, will usually lead to the Philosophy article. As of February 2016, 97% of all articles in Wikipedia eventually lead to the article Philosophy.</p>
-        <a href='https://en.wikipedia.org/wiki/Wikipedia:Getting_to_Philosophy'>More Information</a>
-      </div>
-    </section>
-    <form>
-      <input id='startTerm' type='text' placeholder='Wikipedia Entry Point' />
-      <button type=submit id='submitButton'>Find Philosophy!</button>
-    </form>
-    <ul id='path'></ul>
-
+    <header id='header'>
+      <h1>All Roads Lead to Philosophy</h1>
+      <section class='about'>
+        <button id='about-button'>
+          About
+        </button>
+        <div id='about-info'>
+          <div id='exit'>X</div>
+          <h3>Getting to Philosophy on Wikipedia</h3>
+          <p>Clicking on the first link in the main text of a Wikipedia article, and then repeating the process for subsequent articles, will usually lead to the Philosophy article. As of February 2016, 97% of all articles in Wikipedia eventually lead to the article Philosophy.</p>
+          <p>I suggest trying 'cat' or 'truck'.</p>
+          <a href='https://en.wikipedia.org/wiki/Wikipedia:Getting_to_Philosophy'>More Information on Wikipedia</a>
+        </div>
+      </section>
+    </header>
+    <div class='form-and-results'>
+      <h3>Search for any Wikipedia page and find philosophy!</h3>
+      <form class='wiki-form'>
+        <input id='startTerm' type='text' placeholder='Wikipedia Entry Point' />
+        <button type=submit id='submitButton'>Find Philosophy!</button>
+      </form>
+      <ul id='path'></ul>
+    </div>
     
     
     

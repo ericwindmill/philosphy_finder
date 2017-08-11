@@ -1,16 +1,91 @@
+:root {
+  --grey: #DFE4E8;
+  --grey-lighter: #F9FAFB;
+  --teal: #47C1BF;
+  --teal-dark: #00848E; 
+  --blue: #007ACE;
+  --indigo: #5C6AC4;
+}
+
+a, p, button, input {
+  font-size: 16px;
+}
+
 body {
-  font-family: 'Avenir', Helvetica, sans-serif
+  font-family: 'Avenir', Helvetica, sans-serif;
+  background: var(--grey);
+  padding: 50px;
+}
+
+header {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: center;
+  border-bottom: 1px solid var(--grey-lighter)
+}
+
+a {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+input {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+}
+
+button {
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 1px 1px 5px darkgrey;
+  border: none;
+  cursor: pointer;
+  background-color: var(--indigo);
 }
 
 #about-button {
+  background-color: var(--teal);
+  position: relative;
+  transition: all 0.1s ease-in;
+}
 
+#about-button:hover {
+  background-color: var(--teal-dark);
 }
 
 #about-info {
+  background-color: white;
+  box-shadow: 2px 2px 10px darkgrey;
+  border-radius: 5px;
+  padding: 25px;
+
   display: none;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 99;
 }
 
+#exit {
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 
+}
+
+#exit:hover {
+  color: darkgrey;
+}
+
+.form-and-results {
+  margin: auto;
+  width: 600px;
+  text-align: center;
+}
 
 /*Functionality Styles*/
 #shadowDom {
@@ -19,6 +94,7 @@ body {
 
 #path {
   list-style: none;
+  text-align: left;
 }
 
 #path > li {
@@ -33,4 +109,9 @@ body {
 .error {
   color: firebrick;
   font-size: 2em;
+}
+
+.philosophy-tag {
+  color: green;
+  font-size: 3em;
 }
