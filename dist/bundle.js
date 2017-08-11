@@ -80,6 +80,7 @@ const findPhilosophy = async (term) => {
   const visited = []
   let foundPhilosophy = false
   let currentTerm = term
+  let i = 1
 
   while (visited.length < 100 && !foundPhilosophy) { // stop after 100 tries
     let results = await __WEBPACK_IMPORTED_MODULE_0__fetch__["a" /* WikipediaNode */](currentTerm) // get the wikipedia DOM
@@ -89,13 +90,14 @@ const findPhilosophy = async (term) => {
     }
 
     if (visited.includes(results.parse.title)) { // If you've already visited, you're in a loop
-      __WEBPACK_IMPORTED_MODULE_2__ui__["a" /* addToPath */](results.parse.title)
+      __WEBPACK_IMPORTED_MODULE_2__ui__["a" /* addToPath */](results.parse.title, i)
       __WEBPACK_IMPORTED_MODULE_2__ui__["b" /* handleError */]('You found a loop! Please try another search term.')
       return false
     }
     visited.push(results.parse.title)
     
-    __WEBPACK_IMPORTED_MODULE_2__ui__["a" /* addToPath */](results.parse.title)
+    __WEBPACK_IMPORTED_MODULE_2__ui__["a" /* addToPath */](results.parse.title, i)
+    i++
      // all good, keep moving.
     if (visited[visited.length - 1] === 'Philosophy') { // check to see if you're on philosophy now
       console.log('found Philosophy!')
@@ -107,10 +109,10 @@ const findPhilosophy = async (term) => {
     }
   }
 }
+
+
 document.addEventListener('DOMContentLoaded', async () => {
-  /********* 
-  *Start UI*
-  *********/
+  //Main Process
   let userInput = document.querySelector('#startTerm')
   let button = document.querySelector('#submitButton')
   let ul = document.getElementById('path')
@@ -118,6 +120,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     e.preventDefault()
     ul.innerHTML = ''
     findPhilosophy(userInput.value)
+  })
+
+  //Toggle About
+  let aboutToggle = document.querySelector('#about-button')
+  const aboutInfo = document.querySelector('#about-info')
+  aboutToggle.addEventListener('click', () => {
+    if (aboutInfo.style.display === 'none' || aboutInfo.style.display === '') {
+      aboutInfo.style.display = 'block'
+    } else {
+      aboutInfo.style.display = 'none'
+    }
   })
 })
 
@@ -208,9 +221,7 @@ async function parseResults (results) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = addToPath;
-let i = 1
-
-function addToPath (wikiNode) {
+function addToPath (wikiNode, i) {
   const ul = document.getElementById('path')
   const li = document.createElement('li')
   if (ul.children.length > 0) {
@@ -220,7 +231,6 @@ function addToPath (wikiNode) {
   li.innerHTML = `${i}. ${wikiNode}`
   li.classList.add('next-wiki')
   ul.appendChild(li)
-  i++
 }
 
 const handleError = (message) => {

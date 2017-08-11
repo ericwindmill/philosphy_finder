@@ -1,8 +1,18 @@
 body {
-  padding: 300px;
+  font-family: 'Avenir', Helvetica, sans-serif
+}
+
+#about-button {
+
+}
+
+#about-info {
+  display: none;
 }
 
 
+
+/*Functionality Styles*/
 #shadowDom {
   display: none;
 }
