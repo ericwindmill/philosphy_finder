@@ -18268,11 +18268,11 @@ module.exports = flatten;
 
 async function parseWiki ($, page) {
   let possibleLinks = $('p > a').length ? $('p > a') : $('a');
-  possibleLinks = possibleLinks.not((i, el) => {
-    return !$(el).attr('href') ||
-        $(el).attr('href').indexOf(page) !== -1 ||
-        $(el).attr('rel') === 'nofollow';
-  })
+  // possibleLinks = possibleLinks.not((i, el) => {
+  //   return !$(el).attr('href') ||
+  //       $(el).attr('href').indexOf(page) !== -1 ||
+  //       $(el).attr('rel') === 'nofollow';
+  // })
 
 
   let found = false
@@ -18389,7 +18389,7 @@ async function fetchWikipediaPage (page) {
   return fetch (wikipediaApi)
     .then(resp => { return resp.json() })
     .then(async resp => {
-      console.log(resp)
+
       const html = resp.parse.text['*']
       const $ = __WEBPACK_IMPORTED_MODULE_0_cheerio___default.a.load(html)
       const isRedirect = $('ul.redirectText li a')      
