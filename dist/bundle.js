@@ -18287,7 +18287,6 @@ async function parseWiki ($, page) {
       i++
     }
   }
-  console.log(`3: parsed for the link, the first link on page:${page}, is:`, firstLink)
   return firstLink
 }
 
@@ -18316,9 +18315,7 @@ async function gettingToPhilosophy (page) {
 
   while (!foundPhilosophy && visited.length < 100) {
     const ui = new __WEBPACK_IMPORTED_MODULE_2__ui_helpers_ui__["a" /* default */]()
-    console.log('1: fetching page with:', page)
     let nextPage = await Object(__WEBPACK_IMPORTED_MODULE_0__parse_helpers_fetch__["a" /* default */])(currentPage)
-    console.log('5: recevieved our next term', nextPage)
 
     if (visited.includes(nextPage.title)) {
       ui.addToPath(nextPage.title, counter)
@@ -18327,14 +18324,14 @@ async function gettingToPhilosophy (page) {
     }
 
     visited.push(nextPage.title)
-    ui.addToPath(nextPage.title, counter)
+    ui.addToPath(currentPage, counter)
     counter++
 
     if (visited[visited.length - 1] === 'Philosophy') {
       foundPhilosophy = true
+      ui.addToPath(nextPage.title, counter)
       ui.philosophyIsFound(counter)
     } else {
-      console.log('here', nextPage.title)
       currentPage = nextPage.title
     }
   }
@@ -18393,9 +18390,7 @@ async function fetchWikipediaPage (page) {
       if (isRedirect.length) {
         return fetchWikipediaPage(isRedirect.text().split('/').pop().split('#')[0])
       }
-      console.log('2: fetched, now passing page to parse:', page)
       const nextPage = await Object(__WEBPACK_IMPORTED_MODULE_1__parseWiki__["a" /* default */])($, page)
-      console.log('4: fetch receieved parsed link, passing as nextPage from fetch', nextPage)
       return {
         title: nextPage[0].attribs.title,
         nextPage
