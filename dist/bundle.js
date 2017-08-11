@@ -18268,11 +18268,11 @@ module.exports = flatten;
 
 async function parseWiki ($, page) {
   let possibleLinks = $('p > a').length ? $('p > a') : $('a');
-  possibleLinks = possibleLinks.not((i, el) => {
-    return !$(el).attr('href') ||
-        $(el).attr('href').indexOf(page) !== -1 ||
-        $(el).attr('rel') === 'nofollow';
-  })
+  // possibleLinks = possibleLinks.not((i, el) => {
+  //   return !$(el).attr('href') ||
+  //       $(el).attr('href').indexOf(page) !== -1 ||
+  //       $(el).attr('rel') === 'nofollow';
+  // })
 
 
   let found = false
@@ -18287,7 +18287,6 @@ async function parseWiki ($, page) {
       i++
     }
   }
-  console.log(`3: parsed for the link, the first link on page:${page}, is:`, firstLink)
   return firstLink
 }
 
@@ -18316,9 +18315,12 @@ async function gettingToPhilosophy (page) {
 
   while (!foundPhilosophy && visited.length < 100) {
     const ui = new __WEBPACK_IMPORTED_MODULE_2__ui_helpers_ui__["a" /* default */]()
-    console.log('1: fetching page with:', page)
     let nextPage = await Object(__WEBPACK_IMPORTED_MODULE_0__parse_helpers_fetch__["a" /* default */])(currentPage)
-    console.log('5: recevieved our next term', nextPage)
+    
+    if (nextPage === 'Page does not exist') {
+      ui.handleError('Page does not exists! Please try another search term.')
+      return false
+    }
 
     if (visited.includes(nextPage.title)) {
       ui.addToPath(nextPage.title, counter)
@@ -18327,14 +18329,14 @@ async function gettingToPhilosophy (page) {
     }
 
     visited.push(nextPage.title)
-    ui.addToPath(nextPage.title, counter)
+    ui.addToPath(currentPage, counter)
     counter++
 
     if (visited[visited.length - 1] === 'Philosophy') {
       foundPhilosophy = true
+      ui.addToPath(nextPage.title, counter)
       ui.philosophyIsFound(counter)
     } else {
-      console.log('here', nextPage.title)
       currentPage = nextPage.title
     }
   }
@@ -18383,23 +18385,26 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function fetchWikipediaPage (page) {
   const wikipediaApi = `https://en.wikipedia.org/w/api.php?action=parse&page=${page}&prop=text&origin=*&format=json`
+
   return fetch (wikipediaApi)
     .then(resp => { return resp.json() })
     .then(async resp => {
+
       const html = resp.parse.text['*']
       const $ = __WEBPACK_IMPORTED_MODULE_0_cheerio___default.a.load(html)
-      const isRedirect = $('ul.redirectText li a')
-      
+      const isRedirect = $('ul.redirectText li a')      
       if (isRedirect.length) {
         return fetchWikipediaPage(isRedirect.text().split('/').pop().split('#')[0])
       }
-      console.log('2: fetched, now passing page to parse:', page)
+
       const nextPage = await Object(__WEBPACK_IMPORTED_MODULE_1__parseWiki__["a" /* default */])($, page)
-      console.log('4: fetch receieved parsed link, passing as nextPage from fetch', nextPage)
       return {
         title: nextPage[0].attribs.title,
         nextPage
       }
+    })
+    .catch(resp => {
+      return 'Page does not exist'
     })
 }
 
