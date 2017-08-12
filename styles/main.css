@@ -10,6 +10,7 @@
   --blue: #007ACE;
   /*brand*/
   --indigo: #5C6AC4;
+  --indigo-dark: #202E78;
   /*errors*/
   --red: #ED6347;
   /*success tips*/
@@ -52,13 +53,18 @@ button {
   box-shadow: 1px 1px 5px darkgrey;
   border: none;
   cursor: pointer;
+  transition: all 0.1s ease-in;
   background-color: var(--indigo);
+}
+
+button:hover {
+  background-color: var(--indigo-dark);
 }
 
 #about-button {
   background-color: var(--teal);
   position: relative;
-  transition: all 0.1s ease-in;
+  
 }
 
 #about-button:hover {
